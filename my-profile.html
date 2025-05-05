@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <img id="profile-picture" src="assets/img/avatar.jpg" alt="Profile Picture">
+            <h2 id="employee-name">Alex</h2>
+            <p id="employee-email">alex@example.com</p>
+            <p id="employee-bio">Software Engineer at XYZ Corp.</p>
+            <button onclick="toggleEditProfile()">Edit Profile</button>
+        </div>
+        <form id="edit-profile-form" class="hidden profile-form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email">
+            </div>
+            <div class="form-group">
+                <label for="bio">Bio</label>
+                <textarea id="bio" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="avatar">Change Avatar</label>
+                <input type="file" id="avatar" accept="image/*" onchange="previewAvatar(event)">
+            </div>
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" onclick="toggleEditProfile()">Cancel</button>
+                <button type="button" class="save-btn" onclick="saveChanges()">Save Changes</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="js/my-profile.js"></script>
+</body>
+</html>
