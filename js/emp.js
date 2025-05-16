@@ -34,3 +34,34 @@ function populateTaskTable() {
 
 // Call the function to populate the table on page load
 document.addEventListener("DOMContentLoaded", populateTaskTable);
+
+
+
+async function showUserData() {
+
+    const welcomeMessage = document.getElementById("welcomeMsg");
+
+    const response = await fetch('app/php/userData.php', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+            welcomeMessage.innerHTML = `<a href="my-profile.html" style="color: inherit; text-decoration: none;">Welcome, ${data.user.username.toUpperCase()}!</a>`;
+
+        } else {
+            location.href = "login.html";
+        }
+    } else {
+        console.error("Failed to fetch user data");
+    }
+
+}
+
+document.addEventListener("DOMContentLoaded", showUserData);
+
