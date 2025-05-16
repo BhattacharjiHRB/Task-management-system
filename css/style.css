@@ -491,3 +491,76 @@ nav a:hover {
     transform: rotate(360deg);
   }
 }
+
+/* calendar-view */
+.calendar-body {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+.caldendar-header {
+  padding: 10px;
+  background: #03204b;
+  color: white;
+  text-align: center;
+}
+.controls {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+.controls select,
+.controls button {
+  padding: 6px 10px;
+  font-size: 16px;
+}
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background: #ccc;
+  margin: 10px;
+  height: 700px;
+}
+.day {
+  background: #f9f9f9;
+  padding: 10px;
+  position: relative;
+}
+.day h4 {
+  margin-top: 0;
+  font-size: 14px;
+}
+.task {
+  background: #2196f3;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-top: 5px;
+  cursor: move;
+  font-size: 14px;
+}
+.priority-high {
+  background: #f44336;
+}
+.priority-medium {
+  background: #ff9800;
+}
+.priority-low {
+  background: #4caf50;
+}
+
+@media print {
+  .controls,
+  .caldendar-header {
+    display: none;
+  }
+  .calendar {
+    margin: 0;
+    height: auto;
+  }
+  .day {
+    min-height: 150px;
+  }
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Task Calendar</title>
+    <!-- <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+     
+    </style> -->
+  </head>
+  <body class="calendar-body">
+    <header class="caldendar-header">
+      <h1>Task Timeline Calendar</h1>
+    </header>
+    <div class="controls">
+      <div>
+        <label
+          >View:
+          <select id="viewMode">
+            <option value="day">Day</option>
+            <option value="week" selected>Week</option>
+            <option value="month">Month</option>
+          </select>
+        </label>
+      </div>
+      <button onclick="window.print()">🖨️ Print Calendar</button>
+    </div>
+
+    <div class="calendar" id="calendarGrid"></div>
+
+    <script src="js/calender.js"></script>
+  </body>
+</html>
