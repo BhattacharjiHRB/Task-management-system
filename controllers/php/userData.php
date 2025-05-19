@@ -1,6 +1,6 @@
 <?php
 session_start();
-header('Content-Type: application/json');
+header('Content-Type: controllerslication/json');
 
 require_once '../utils/database.php';
 
@@ -35,16 +35,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
  if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
-    $uploadDir = dirname(__DIR__, 2) . '/app/uploads/';
+    $uploadDir = dirname(__DIR__, 2) . '/controllers/uploads/';
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0777, true);
     }
 
     $originalName = basename($_FILES['avatar']['name']);
-    $sanitized = preg_replace('/[^a-zA-Z0-9_\.-]/', '_', $originalName); // sanitize
+    $projectPath = '/Task-management-system';
+    $sanitized = preg_replace('/[^a-zA-Z0-9_\.-]/', '_', $originalName); 
     $filename = uniqid() . '_' . $sanitized;
     $targetFile = $uploadDir . $filename;
-    $relativePath = 'app/uploads/' . $filename;
+    $relativePath = $projectPath . '/controllers/uploads/' . $filename;
 
     if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFile)) {
         $fields[] = 'profile_image = :profile_image';

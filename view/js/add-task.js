@@ -39,7 +39,7 @@ addTaskButton.addEventListener("click", () => {
     }
 });
 
-// Voice Input Support
+
 if ("webkitSpeechRecognition" in window) {
     const recognition = new webkitSpeechRecognition();
     recognition.continuous = false;
@@ -64,4 +64,43 @@ if ("webkitSpeechRecognition" in window) {
     });
 } else {
     alert("Voice input is not supported in this browser.");
+}
+
+let subtasks = [];
+
+document.getElementById('subtaskInput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter' && this.value.trim() !== '') {
+        subtasks.push({ text: this.value, done: false });
+        renderSubtasks();
+        this.value = '';
+    }
+});
+
+function renderSubtasks() {
+    const list = document.getElementById('subtaskList');
+    list.innerHTML = '';
+
+    subtasks.forEach((task, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+      <input type="checkbox" onchange="toggleSubtask(${index})" ${task.done ? 'checked' : ''}>
+      <span style="text-decoration: ${task.done ? 'line-through' : 'none'}">${task.text}</span>
+    `;
+        list.appendChild(li);
+    });
+
+    updateProgress();
+}
+
+function toggleSubtask(index) {
+    subtasks[index].done = !subtasks[index].done;
+    renderSubtasks();
+}
+
+function updateProgress() {
+    const completed = subtasks.filter(t => t.done).length;
+    const percent = subtasks.length ? Math.round((completed / subtasks.length) * 100) : 0;
+
+    document.getElementById('taskProgress').value = percent;
+    document.getElementById('progressPercent').innerText = `${percent}%`;
 }

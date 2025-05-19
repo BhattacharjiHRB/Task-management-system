@@ -2,8 +2,165 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
   display: flex;
+  width: 100%;
   height: 100vh;
   margin: 0;
+}
+
+.nav-head {
+  display: flex;
+  flex: 1;
+  position: relative;
+  background-color: #03204b;
+  color: white;
+  padding: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  top: 0;
+}
+.welcomeDiv {
+  width: 100%;
+  display: flex;
+  padding: 1rem;
+  margin-right: 2rem;
+  justify-content: start;
+  align-items: center;
+}
+.notification-div {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  justify-content: end;
+  align-items: center;
+}
+
+.nav {
+  background-color: transparent;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: end;
+  position: relative;
+}
+
+.bell-icon {
+  position: relative;
+  cursor: pointer;
+}
+
+.bell-icon img {
+  width: 24px;
+}
+
+.count-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+.notification-center {
+  position: absolute;
+  right: 1rem;
+  top: 6rem;
+  width: 300px;
+  background-color: #f0f0f0;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  z-index: 10;
+  transition: ease-out 0.3s;
+}
+
+.notification-center h3 {
+  margin: 0;
+  padding: 1rem;
+  background: #f0f0f0;
+  color: #333;
+  border-bottom: 1px solid #000;
+}
+
+.notification {
+  padding: 0.75rem 1rem;
+  color: #333;
+  border-bottom: 1px solid #6b6b6b;
+}
+
+.notification:last-child {
+  border-bottom: none;
+}
+
+.settings {
+  margin: 1rem;
+  color: #333;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 20px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #3182ce;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+@media (max-width: 500px) {
+  .notification-center {
+    width: 60%;
+    right: 2%;
+  }
+
+  .nav {
+    justify-content: space-between;
+  }
 }
 .login-container {
   width: 400px;
@@ -128,15 +285,27 @@ body {
   background-color: #218838;
 }
 
+.priority-selector,
+.category-manager,
+.subtasks-container,
+.progress-tracker {
+  gap: 2rem;
+}
+
+#subtaskList {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#subtaskList li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 5px 0;
+}
+
 /* Employee */
 
-header {
-  top: 0;
-  background-color: #03204b;
-  color: white;
-  padding: 1rem;
-  text-align: center;
-}
 nav {
   background-color: #333;
   color: white;
@@ -180,7 +349,7 @@ nav a {
   transition: background-color 0.3s ease;
 }
 nav a:hover {
-  background-color: #575757;
+  background-color: #444444;
 }
 
 .assigned-tasks-table {
@@ -229,6 +398,7 @@ nav a:hover {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  margin-top: 2rem;
 }
 .widget {
   background-color: white;
@@ -265,6 +435,7 @@ nav a:hover {
   nav.active {
     transform: translateX(0);
   }
+
   .container {
     margin-left: 0;
   }
@@ -280,6 +451,15 @@ nav a:hover {
     border-radius: 5px;
     cursor: pointer;
     z-index: 1000;
+  }
+}
+@media (max-width: 500px) {
+  .widget {
+    flex: 1 1 calc(100% - 2rem);
+  }
+  .quick-actions button {
+    width: 100%;
+    margin: 0.5rem 0;
   }
 }
 
@@ -315,14 +495,14 @@ nav a:hover {
   background-color: #f1f1f1;
 }
 .priority-high {
-  color: red;
+  color: rgb(233, 169, 169);
   font-weight: bold;
 }
 .priority-medium {
-  color: orange;
+  color: rgb(231, 209, 167);
 }
 .priority-low {
-  color: green;
+  color: rgb(174, 245, 174);
 }
 .subtasks {
   margin: 0;
@@ -364,6 +544,21 @@ nav a:hover {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: left;
+}
+
+@media screen and (max-width: 768px) {
+  .all-task-container,
+  .task-container {
+    width: 90%;
+  }
+  ask-list {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .task-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 /* My-profile */

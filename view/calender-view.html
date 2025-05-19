@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />   
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Task Calendar</title>
+   
+  </head>
+  <body class="calendar-body">
+    <nav id="sidebar">
+      <h2>Employee</h2>
+      <ul id="navList">
+        <li>
+          <a href="employee.html">
+            <i class="fa fa-tachometer" aria-hidden="true"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="my-task.html">
+            <i class="fa fa-tasks" aria-hidden="true" ></i>
+            <span>All Task</span>
+          </a>
+        </li>
+        <li>
+          <a href="my-profile.html">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+        <li>
+          <a href="calender-view.html">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+            <span>Calendar</span>
+          </a>
+        </li>
+        <li onclick="logoutUser()">
+          <a>
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            <span>Logout</span>
+          </a>
+        </li>
+      </ul>
+    </nav> 
+ 
+    <div class="container">
+       <header class="nav-head">
+        <div class="welcomeDiv">
+          <h1 id="welcomeMsg">Task Calendar View </h1>
+        </div>
+        <div class="notification-div">
+          <div class="nav">
+      <div class="bell-icon" onclick="toggleNotificationCenter()">
+        <img
+          src="https://img.icons8.com/ios-filled/50/ffffff/bell.png"
+          alt="Notifications"
+        />
+        <span class="count-badge" id="unreadCount">3</span>
+      </div>
+    </div>
+
+    <div class="notification-center" id="notificationCenter">
+      <h3>Notifications</h3>
+      <div class="notification">🔔 Task "Design UI" was updated.</div>
+      <div class="notification">📧 Email sent to client.</div>
+      <div class="notification">📅 New event added to your calendar.</div>
+
+      <div class="settings">
+        <h4>Notification Settings</h4>
+        <div class="toggle">
+          <label>Email Alerts</label>
+          <label class="switch">
+            <input type="checkbox" id="emailToggle" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="toggle">
+          <label>Push Alerts</label>
+          <label class="switch">
+            <input type="checkbox" id="pushToggle" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+        </div>
+        
+      </header> 
+    <div class="controls">
+      <div>
+        <label
+          >View:
+          <select id="viewMode">
+            <option value="day">Day</option>
+            <option value="week" >Week</option>
+            <option value="month" selected>Month</option>
+          </select>
+        </label>
+      </div>
+      <button onclick="window.print()">🖨️ Print Calendar</button>
+    </div>
+
+    <div class="calendar" id="calendarGrid"></div>
+
+    <script src="js/calender.js"></script>
+  </body>
+</html>

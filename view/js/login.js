@@ -37,7 +37,7 @@ document
             loadingMessage.style.display = "block";
             errorMessage.style.display = "none";
             try {
-                const response = await fetch("app/php/login.php", {
+                const response = await fetch("../controllers/php/login.php", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -78,17 +78,4 @@ document
 
 
 
-
-async function logoutUser() {
-    await fetch("app/php/logout.php", {
-        method: "POST",
-        credentials: "include"
-    })
-        .then(() => {
-            window.location.href = "login.html";
-        })
-        .catch((error) => {
-            console.error("Logout failed:", error);
-            alert("Logout failed. Please try again.");
-        });
-}
+// logout user

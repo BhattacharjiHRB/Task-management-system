@@ -52,7 +52,7 @@ const tasks = [
 
 
 
-const BASE_DATE = new Date("2023-10-01"); // Calendar starts from Oct 1, 2023
+const BASE_DATE = new Date("2023-10-01");
 
 function getDateOffset(base, target) {
     const msPerDay = 1000 * 60 * 60 * 24;
@@ -133,3 +133,37 @@ function drop(e) {
 viewMode.addEventListener("change", renderCalendar);
 
 renderCalendar();
+
+
+const bellIcon = document.querySelector(".bell-icon");
+const notificationCenter = document.getElementById("notificationCenter");
+const unreadCount = document.getElementById("unreadCount");
+
+function toggleNotificationCenter() {
+    notificationCenter.style.display =
+        notificationCenter.style.display === "flex" ? "none" : "flex";
+
+    // Clear unread count when opened
+    if (notificationCenter.style.display === "flex") {
+        unreadCount.style.display = "none";
+    }
+}
+
+// Settings toggles (can be hooked to backend)
+document.getElementById("emailToggle").addEventListener("change", (e) => {
+    console.log("Email alerts:", e.target.checked);
+});
+
+document.getElementById("pushToggle").addEventListener("change", (e) => {
+    console.log("Push alerts:", e.target.checked);
+});
+
+// Close on outside click
+window.addEventListener("click", function (e) {
+    if (
+        !bellIcon.contains(e.target) &&
+        !notificationCenter.contains(e.target)
+    ) {
+        notificationCenter.style.display = "none";
+    }
+});

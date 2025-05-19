@@ -1,6 +1,6 @@
 async function fetchUserData() {
     try {
-        const response = await fetch('app/php/userData.php', {
+        const response = await fetch('../controllers/php/userData.php', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -59,22 +59,24 @@ async function saveChanges() {
 
 
     try {
-        const response = await fetch('app/php/userData.php', {
+        const response = await fetch('../controllers/php/userData.php', {
             method: 'POST',
             body: formData
         });
 
         const result = await response.json();
 
-
+        console.log("result", result)
 
         if (result.success) {
             document.getElementById('employee-name').textContent = name;
             document.getElementById('employee-username').textContent = `@${userName}`;
             document.getElementById('employee-role').textContent = role;
 
+
             if (result.user && result.user.profile_image) {
-                document.getElementById('profile-picture').src = result.user.profile_image;
+                const avatarPath = result.user.profile_image
+                document.getElementById('profile-picture').src = avatarPath;
             }
 
             alert('Profile updated successfully!');
@@ -83,7 +85,43 @@ async function saveChanges() {
             alert('Failed to update profile: ' + result.message);
         }
 
+
+
     } catch (error) {
         console.error('Error updating profile:', error);
     }
 }
+
+
+const bellIcon = document.querySelector(".bell-icon");
+const notificationCenter = document.getElementById("notificationCenter");
+const unreadCount = document.getElementById("unreadCount");
+
+function toggleNotificationCenter() {
+    notificationCenter.style.display =
+        notificationCenter.style.display === "flex" ? "none" : "flex";
+
+    // Clear unread count when opened
+    if (notificationCenter.style.display === "flex") {
+        unreadCount.style.display = "none";
+    }
+}
+
+// Settings toggles (can be hooked to backend)
+document.getElementById("emailToggle").addEventListener("change", (e) => {
+    console.log("Email alerts:", e.target.checked);
+});
+
+document.getElementById("pushToggle").addEventListener("change", (e) => {
+    console.log("Push alerts:", e.target.checked);
+});
+
+// Close on outside click
+window.addEventListener("click", function (e) {
+    if (
+        !bellIcon.contains(e.target) &&
+        !notificationCenter.contains(e.target)
+    ) {
+        notificationCenter.style.display = "none";
+    }
+});

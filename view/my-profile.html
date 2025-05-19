@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav id="sidebar">
+      <h2>Employee</h2>
+      <ul id="navList">
+        <li>
+          <a href="employee.html">
+            <i class="fa fa-tachometer" aria-hidden="true"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="my-task.html">
+            <i class="fa fa-tasks" aria-hidden="true" ></i>
+            <span>All Task</span>
+          </a>
+        </li>
+        <li>
+          <a href="my-profile.html">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+        <li>
+          <a href="calender-view.html">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+            <span>Calendar</span>
+          </a>
+        </li>
+        <li onclick="logoutUser()">
+          <a>
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            <span>Logout</span>
+          </a>
+        </li>
+      </ul>
+    </nav> 
+ 
+    <div class="container">
+       <header class="nav-head">
+        <div class="welcomeDiv">
+          <h1 id="welcomeMsg">Profile</h1>
+        </div>
+        <div class="notification-div">
+          <div class="nav">
+      <div class="bell-icon" onclick="toggleNotificationCenter()">
+        <img
+          src="https://img.icons8.com/ios-filled/50/ffffff/bell.png"
+          alt="Notifications"
+        />
+        <span class="count-badge" id="unreadCount">3</span>
+      </div>
+    </div>
+
+    <div class="notification-center" id="notificationCenter">
+      <h3>Notifications</h3>
+      <div class="notification">🔔 Task "Design UI" was updated.</div>
+      <div class="notification">📧 Email sent to client.</div>
+      <div class="notification">📅 New event added to your calendar.</div>
+
+      <div class="settings">
+        <h4>Notification Settings</h4>
+        <div class="toggle">
+          <label>Email Alerts</label>
+          <label class="switch">
+            <input type="checkbox" id="emailToggle" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="toggle">
+          <label>Push Alerts</label>
+          <label class="switch">
+            <input type="checkbox" id="pushToggle" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+        </div>
+        
+      </header> 
+    <div class="profile-container">
+        <div class="profile-header">
+            <img id="profile-image" src="../assets/img/avatar.jpg" alt="Profile Picture">
+            <h2 id="employee-name">Alex</h2>
+            <p id="employee-username">@alex</p>
+            <p id="employee-role">Software Engineer</p>
+            <button onclick="toggleEditProfile()">Edit Profile</button>
+        </div>
+        <form id="edit-profile-form" class="hidden profile-form">
+            <div class="form-group">
+                <label for="full_name">Full Name</label>
+                <input type="text" id="full_name">
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username">
+            </div>
+            <div class="form-group">
+                <label for="role">Role</label>
+                <input disabled type="text" id="role">
+            </div>
+            <div class="form-group">
+                <label for="profile_Image">Change profile Image</label>
+                <input type="file" id="avatar" accept="image/*" >
+            </div>
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" onclick="toggleEditProfile()">Cancel</button>
+                <button type="button" class="save-btn" onclick="saveChanges()">Save Changes</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="js/my-profile.js"></script>
+</body>
+</html>

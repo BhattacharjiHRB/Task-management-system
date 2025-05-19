@@ -11,7 +11,10 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <nav id="sidebar">
+    <div id="sidebaar"></div>
+    <div id="headeer"></div>
+  
+     <nav id="sidebar">
       <h2>Employee</h2>
       <ul id="navList">
         <li>
@@ -21,7 +24,7 @@
           </a>
         </li>
         <li>
-          <a href="calender-view.html">
+          <a href="my-task.html">
             <i class="fa fa-tasks" aria-hidden="true" ></i>
             <span>All Task</span>
           </a>
@@ -33,25 +36,65 @@
           </a>
         </li>
         <li>
-          <a href="" onclick="alert(`ERROR: Notification Is not Implemented Yet`)">
-            <i class="fa fa-bell" aria-hidden="true"></i>
-            <span>Notifications</span>
+          <a href="calender-view.html">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+            <span>Calendar</span>
           </a>
         </li>
-        <li onclick="logoutUser()">
+        <li id="logout-li" >
           <a>
             <i class="fa fa-sign-out" aria-hidden="true"></i>
             <span>Logout</span>
           </a>
         </li>
       </ul>
-    </nav>
+    </nav> 
+ 
     <div class="container">
-      <header>
-        <h1 id="welcomeMsg">Welcome to the Dashboard</h1>
-      </header>
+       <header class="nav-head">
+        <div class="welcomeDiv">
+          <h1 id="welcomeMsg">Welcome to the Dashboard</h1>
+        </div>
+        <div class="notification-div">
+          <div class="nav">
+      <div class="bell-icon" onclick="toggleNotificationCenter()">
+        <img
+          src="https://img.icons8.com/ios-filled/50/ffffff/bell.png"
+          alt="Notifications"
+        />
+        <span class="count-badge" id="unreadCount">3</span>
+      </div>
+    </div>
+
+    <div class="notification-center" id="notificationCenter">
+      <h3>Notifications</h3>
+      <div class="notification">🔔 Task "Design UI" was updated.</div>
+      <div class="notification">📧 Email sent to client.</div>
+      <div class="notification">📅 New event added to your calendar.</div>
+
+      <div class="settings">
+        <h4>Notification Settings</h4>
+        <div class="toggle">
+          <label>Email Alerts</label>
+          <label class="switch">
+            <input type="checkbox" id="emailToggle" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="toggle">
+          <label>Push Alerts</label>
+          <label class="switch">
+            <input type="checkbox" id="pushToggle" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+        </div>
+        
+      </header> 
       <section id="home">
-        <h2>Home Dashboard</h2>
+        <h2 style="display: none;">Home Dashboard</h2>
         <div class="widgets">
           <div class="widget" onclick="showDetails('Tasks Completed')">
             <h3>Tasks Completed</h3>
@@ -89,8 +132,8 @@
         <a href="add-task.html">
             <button onclick="performAction('Add Task')">Add Task</button>
         </a>
-        <button onclick="performAction('View Reports')">View Reports</button>
-        <button onclick="performAction('Manage Team')">Manage Team</button>
+        <button onclick="window.location.href = `page-not-found.html`;">View Reports</button>
+        <button onclick="window.location.href = `page-not-found.html`;">Manage Team</button>
       </section>
     </div>
     <script src="js/emp.js"></script>
