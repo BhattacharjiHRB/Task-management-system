@@ -193,11 +193,20 @@ input:checked + .slider:before {
   border-radius: 4px;
   box-sizing: border-box;
 }
+
+.form-group input:focus {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
 .form-group button {
   width: 100%;
   padding: 10px;
   margin: 10px 0 0 0;
-  background-color: #007bff;
+  background-color: #03204b;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -217,10 +226,12 @@ input:checked + .slider:before {
 
 /* Add-task */
 .task-container {
-  width: 50%;
-  max-height: 50%;
-  margin: 0;
-  padding: 0;
+  width: 55%;
+  margin: 40px auto 0 auto;
+  padding: 32px 24px;
+  background: linear-gradient(135deg, #f8fafc 60%, #e3eefe 100%);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(3, 32, 75, 0.08), 0 1.5px 4px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -230,85 +241,170 @@ input:checked + .slider:before {
 .quick-add-bar {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
+  padding: 12px 18px;
+  width: 100%;
+  max-width: 520px;
 }
 
 .quick-add-bar input {
-  width: 300px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 10px;
+  width: 320px;
+  padding: 12px 14px;
+  border: 1.5px solid #bcd0ee;
+  border-radius: 6px;
+  margin-right: 14px;
+  font-size: 1rem;
+  background: #f6faff;
+  transition: border 0.2s;
+}
+
+.quick-add-bar input:focus {
+  border: 1.5px solid #3182ce;
+  outline: none;
+  background: #fff;
 }
 
 .quick-add-bar button {
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
+  padding: 12px 22px;
+  background: #03204b;
+  color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(49, 130, 206, 0.08);
 }
 
 .quick-add-bar button:hover {
-  background-color: #0056b3;
+  background: #0056b3;
 }
 
 .detailed-task-form {
   display: none;
   flex-direction: column;
-  width: 500px;
-  background: transparent;
-  padding: 20px;
-  border-radius: 4px;
+  width: 70%;
+  margin-top: 18px;
+  gap: 10px;
 }
 
 .detailed-task-form input,
 .detailed-task-form textarea {
   width: 95%;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border: 1.5px solid #bcd0ee;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f6faff;
+  transition: border 0.2s;
+  resize: vertical;
+}
+
+.detailed-task-form input:focus,
+.detailed-task-form textarea:focus {
+  border: 1.5px solid #3182ce;
+  background: #fff;
+  outline: none;
 }
 
 .detailed-task-form button {
-  padding: 10px;
-  background-color: #28a745;
+  padding: 12px 0;
+  background: #03204b;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 8px;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.08);
+  transition: background 0.2s, transform 0.1s;
 }
 
 .detailed-task-form button:hover {
-  background-color: #218838;
+  background: #007bff;
 }
 
-.priority-selector,
+/* Beautified Priority Selector */
+.priority-selector {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+#taskPriority {
+  padding: 12px 14px;
+  border: 1.5px solid #bcd0ee;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f6faff;
+  transition: border 0.2s;
+  resize: vertical;
+  outline: none;
+}
+
+#taskPriority:focus {
+  border: 1.5px solid #3182ce;
+  background: #fff;
+}
+
 .category-manager,
 .subtasks-container,
 .progress-tracker {
   gap: 2rem;
+  margin-bottom: 10px;
 }
 
 #subtaskList {
   list-style-type: none;
   padding-left: 0;
+  margin-top: 10px;
 }
 
 #subtaskList li {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 5px 0;
+  gap: 0.7rem;
+  margin: 7px 0;
+  background: #f6faff;
+  border-radius: 5px;
+  padding: 7px 12px;
+  box-shadow: 0 1px 4px rgba(49, 130, 206, 0.04);
+  font-size: 1rem;
+}
+
+@media (max-width: 900px) {
+  .task-container {
+    width: 90%;
+    padding: 18px 6px;
+  }
+  .detailed-task-form {
+    width: 100%;
+    max-width: 98vw;
+    padding: 16px 6px;
+  }
+  .quick-add-bar {
+    max-width: 98vw;
+    padding: 8px 6px;
+  }
+  .quick-add-bar input {
+    width: 100%;
+    min-width: 0;
+  }
+  .priority-selector {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
 }
 
 /* Employee */
 
 nav {
   background-color: #333;
-  color: white;
+  color: #ffffff;
   width: 250px;
   height: 100vh;
   padding: 1rem;
@@ -331,6 +427,7 @@ nav li {
   padding: 0;
 }
 nav h2 {
+  color: #ffffff;
   margin-top: 0;
   margin-bottom: 20px;
   height: 30%;

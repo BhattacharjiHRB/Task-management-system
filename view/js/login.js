@@ -51,13 +51,15 @@ document
                 if (data.success && data.role === "employee") {
                     window.location.href = "employee.html";
                 } else if (data.success && data.role === "admin") {
-                    window.location.href = "page-not-found.html";
+                    window.location.href = "admin.html";
                 }
                 else {
                     errorMessage.textContent = data.message;
                     errorMessage.style.display = "block";
                     errorMessage.style.color = "red";
                     errorMessage.style.fontSize = "14px";
+
+                    window.location.href = "page-not-found.html";
                 }
             } catch (error) {
                 console.error("Error:", error);

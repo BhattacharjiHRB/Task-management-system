@@ -1,0 +1,214 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+}
+
+.widgets {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+.widget {
+  background: #fff;
+  flex: 1;
+  padding: 30px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  text-align: center;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+.widget:hover {
+  box-shadow: 0 4px 16px rgba(44, 62, 80, 0.13);
+}
+.widget h3 {
+  margin: 0 0 10px 0;
+  color: #222d32;
+}
+.widget p {
+  font-size: 2em;
+  color: #3498db;
+  margin: 0;
+}
+section {
+  margin-bottom: 32px;
+}
+h2 {
+  color: #222d32;
+  margin-bottom: 18px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+th,
+td {
+  padding: 12px 10px;
+  text-align: left;
+}
+th {
+  background: #f4f6f9;
+  color: #222d32;
+}
+tr:nth-child(even) {
+  background: #f9fafb;
+}
+.employee-table td,
+.assigned-tasks-table td {
+  vertical-align: middle;
+}
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.9em;
+  color: #fff;
+}
+.status-active {
+  background: #27ae60;
+}
+.status-inactive {
+  background: #e67e22;
+}
+.status-completed {
+  background: #2980b9;
+}
+.status-pending {
+  background: #e74c3c;
+}
+.action-btn {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 14px;
+  margin-right: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.action-btn:hover {
+  background: #217dbb;
+}
+.quick-actions {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+.quick-actions button {
+  background: #0544a3;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 18px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.quick-actions button:hover {
+  background: #3498db;
+}
+@media (max-width: 900px) {
+  .widgets {
+    flex-direction: column;
+  }
+  .container {
+    margin-left: 0;
+    padding: 10px;
+  }
+  #sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* register user */
+.register-container {
+  width: 45%;
+  background: #fff;
+  padding: 5em;
+  border-radius: 1.25rem;
+  box-shadow: 0 8px 32px rgba(60, 60, 120, 0.15);
+  margin: auto;
+}
+
+.register-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2d3748;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #374151;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 0.5rem;
+  background: #f8fafc;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+input:focus,
+select:focus {
+  border-color: #4f8cff;
+  background: #fff;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 0.85rem 0;
+  background: #03204b;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background: #033681;
+}
+
+.message {
+  margin-top: 1.2rem;
+  text-align: center;
+  font-size: 1rem;
+  color: #e53e3e;
+  min-height: 1.2em;
+}
+
+@media (max-width: 500px) {
+  .register-container {
+    padding: 1.5rem 0.5rem;
+    border-radius: 0.75rem;
+  }
+}

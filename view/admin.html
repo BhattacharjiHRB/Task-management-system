@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <style>
+      .widgets {
+        display: flex;
+        gap: 24px;
+        margin-bottom: 30px;
+      }
+      .widget {
+        background: #fff;
+        flex: 1;
+        padding: 30px 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        text-align: center;
+        cursor: pointer;
+        transition: box-shadow 0.2s;
+      }
+      .widget:hover {
+        box-shadow: 0 4px 16px rgba(44,62,80,0.13);
+      }
+      .widget h3 {
+        margin: 0 0 10px 0;
+        color: #222d32;
+      }
+      .widget p {
+        font-size: 2em;
+        color: #3498db;
+        margin: 0;
+      }
+      section {
+        margin-bottom: 32px;
+      }
+      h2 {
+        color: #222d32;
+        margin-bottom: 18px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      }
+      th, td {
+        padding: 12px ;
+        text-align: left;
+      }
+      th {
+        background: #f4f6f9;
+        color: #222d32;
+      }
+      tr:nth-child(even) {
+        background: #f9fafb;
+      }
+      .employee-table td, .assigned-tasks-table td {
+        vertical-align: middle;
+      }
+      .status-badge {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.9em;
+        color: #fff;
+      }
+      .status-active { background: #27ae60; }
+      .status-inactive { background: #e67e22; }
+      .status-completed { background: #238b54; }
+      .status-pending { background: #e7b93c; }
+      .action-btn {
+        background: #3498db;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 6px 14px;
+        margin-right: 6px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .action-btn:hover {
+        background: #217dbb;
+      }
+      .quick-actions {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 16px;
+      }
+      .quick-actions button {
+        background: #0544a3;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 18px;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .quick-actions button:hover {
+        background: #3498db;
+      }
+      @media (max-width: 900px) {
+        .widgets { flex-direction: column; }
+        .container { margin-left: 0; padding: 10px; }
+        #sidebar { position: static; width: 100%; height: auto; }
+      }
+    </style>
+
+  <body>
+     <nav id="sidebar">
+      <h2>Admin</h2>
+      <ul id="navList">
+        <li>
+          <a href="admin.html">
+            <i class="fa fa-tachometer" aria-hidden="true"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="my-task.html">
+            <i class="fa fa-users" aria-hidden="true" ></i>
+            <span>Employees</span>
+          </a>
+        </li>
+        <li>
+          <a href="my-profile.html">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+        <li>
+          <a href="calender-view.html">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+            <span>Calendar</span>
+          </a>
+        </li>
+        <li id="logout-li" >
+          <a>
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            <span>Logout</span>
+          </a>
+        </li>
+      </ul>
+    </nav> 
+ 
+    <div class="container">
+       <header class="nav-head">
+        <div class="welcomeDiv">
+          <h1 id="welcomeMsg">Welcome to the Dashboard</h1>
+        </div>
+        <div class="notification-div">
+          <div class="nav">
+      <div class="bell-icon" onclick="toggleNotificationCenter()">
+        <img
+          src="https://img.icons8.com/ios-filled/50/ffffff/bell.png"
+          alt="Notifications"
+        />
+        <span class="count-badge" id="unreadCount">3</span>
+      </div>
+    </div>
+
+    <div class="notification-center" id="notificationCenter">
+      <h3>Notifications</h3>
+      <div class="notification">🔔 Task "Design UI" was updated.</div>
+      <div class="notification">📧 Email sent to client.</div>
+      <div class="notification">📅 New event added to your calendar.</div>
+
+      <div class="settings">
+        <h4>Notification Settings</h4>
+        <div class="toggle">
+          <label>Email Alerts</label>
+          <label class="switch">
+            <input type="checkbox" id="emailToggle" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="toggle">
+          <label>Push Alerts</label>
+          <label class="switch">
+            <input type="checkbox" id="pushToggle" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+        </div>
+        
+      </header> 
+    
+    <section id="home">
+      <h2 style="display: none;">Admin Dashboard</h2>
+      <div class="widgets">
+        <div class="widget" onclick="showDetails('Total Employees')">
+        <h3>Total Employees</h3>
+        <p id="totalEmployees">0</p>
+        </div>
+        <div class="widget" onclick="showDetails('Tasks Assigned')">
+        <h3>Tasks Assigned</h3>
+        <p id="tasksAssigned">0</p>
+        </div>
+        <div class="widget" onclick="showDetails('Tasks Completed')">
+        <h3>Tasks Completed</h3>
+        <p id="tasksCompleted">0</p>
+        </div>
+        <div class="widget" onclick="showDetails('Pending Tasks')">
+        <h3>Pending Tasks</h3>
+        <p id="pendingTasks">0</p>
+        </div>
+      </div>
+    </section>
+    <section id="employee-overview">
+      <h2>Employee Overview</h2>
+      <table class="employee-table">
+        <thead>
+        <tr>
+          <th>Employee ID</th>
+          <th>Name</th>
+          <th>Assigned Tasks</th>
+          <th>Completed Tasks</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="employeeTableBody">
+        <!-- Employee data will be dynamically added here -->
+        </tbody>
+      </table>
+    </section>
+    <section id="assigned-tasks">
+      <h2>All Tasks</h2>
+      <table class="assigned-tasks-table">
+        <thead class="assigned-tasks-table-head">
+        <tr>
+          <th>Task ID</th>
+          <th>Task Name</th>
+          <th>Assigned To</th>
+          <th>Deadline</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="taskTableBody">
+        <!-- Tasks will be dynamically added here -->
+        </tbody>
+      </table>
+    </section>
+    <h2>Quick Actions</h2>
+    <section id="quick-actions" class="quick-actions">
+      <a href="add-task.html">
+        <button>Add Task</button>
+      </a>
+        <button onclick="window.location.href =`register.html` ">Add Employee</button>
+        <button onclick="window.location.href = 'page-not-found.html';">View Reports</button>
+        <button onclick="window.location.href = 'page-not-found.html';">Manage Team</button>
+    </section>
+
+    
+    </div>
+    <script src="js/admin.js"></script>
+    </script>
+  </body>
+</html>

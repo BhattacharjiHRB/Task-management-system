@@ -5,13 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add Task</title>
     <link rel="stylesheet" href="css/style.css" />
+    
+     <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
   </head>
   <body>
     <nav id="sidebar">
-    <h2>Employee</h2>
+    <h2>Admin</h2>
     <ul id="navList">
       <li>
-        <a href="employee.html">
+        <a href="admin.html">
           <i class="fa fa-tachometer" aria-hidden="true"></i>
           <span>Dashboard</span>
         </a>
@@ -86,6 +91,7 @@
       </div>
       
     </header> 
+
     <div class="task-container">
 
       <div class="quick-add-bar">
@@ -98,10 +104,12 @@
       </div>
 
       <div class="detailed-task-form" id="detailedTaskForm">
+        <label for="taskDescription">Task Description</label>
         <textarea
           id="taskDescription"
           placeholder="Task Description"
         ></textarea>
+        <label for="taskLabels">Labels</label>
         <input
           type="text"
           id="taskLabels"

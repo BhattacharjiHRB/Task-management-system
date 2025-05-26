@@ -1,18 +1,5 @@
 
 
-function showDetails(widgetName) {
-    window.location.href = 'page-not-found.html'
-}
-function performAction(actionName) {
-    window.location.href = 'page-not-found.html'
-}
-
-function toggleMenu() {
-    const sidebar = document.getElementById("sidebar");
-    sidebar.classList.toggle("active");
-}
-
-
 const tasks = [
     { id: 1, name: "Design Homepage", deadline: "2023-10-15", status: "Completed" },
     { id: 2, name: "Fix Bugs", deadline: "2023-10-20", status: "In Progress" },
@@ -116,6 +103,7 @@ async function logoutUser() {
         if (res.ok) {
             alert("Are you sure you want to logout?");
             cookieStore.delete("PHPSESSID");
+            window.location.reload();
             window.location.href = "login.html";
 
         }
