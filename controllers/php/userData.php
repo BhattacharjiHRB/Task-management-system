@@ -1,10 +1,8 @@
 <?php
 session_start();
-header('Content-Type: controllerslication/json');
+header('Content-Type: application/json');
 
-require_once '../utils/database.php';
-
-
+require_once '../utils/database.php'; // Ensure this file initializes a MySQLi connection in `$conn`
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $required = ['full_name', 'username', 'password', 'role'];
@@ -43,20 +41,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     }
 
     // Check if username already exists
-    $stmt = $conn->prepare("SELECT id FROM users WHERE username = :username");
-    $stmt->bindParam(':username', $username);
+    $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+    $stmt->bind_param('s', $username);
     $stmt->execute();
-    if ($stmt->fetch()) {
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
         echo json_encode(['success' => false, 'message' => 'Username already taken.']);
         exit;
     }
 
     // Insert user with optional profile_image
-    $sql = "INSERT INTO users (full_name, username, password, role, profile_image) VALUES (?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-   
-    
-    
+    $stmt = $conn->prepare("INSERT INTO users (full_name, username, password, role, profile_image) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param('sssss', $full_name, $username, $password, $role, $profile_image);
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => 'User registered successfully.']);
@@ -65,8 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     }
     exit;
 }
-
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_SESSION['user_id'])) {
@@ -80,62 +74,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Update full_name
     if (isset($_POST['full_name'])) {
-        $fields[] = 'full_name = :full_name';
-        $params[':full_name'] = $_POST['full_name'];
+        $fields[] = 'full_name = ?';
+        $params[] = $_POST['full_name'];
     }
 
     // Update username
     if (isset($_POST['username'])) {
-        $fields[] = 'username = :username';
-        $params[':username'] = $_POST['username'];
+        $fields[] = 'username = ?';
+        $params[] = $_POST['username'];
     }
 
     // Update role (optional)
     if (isset($_POST['role'])) {
-        $fields[] = 'role = :role';
-        $params[':role'] = $_POST['role'];
+        $fields[] = 'role = ?';
+        $params[] = $_POST['role'];
     }
 
- if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
-    $uploadDir = dirname(__DIR__, 2) . '/controllers/uploads/';
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0777, true);
-    }
+    if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = dirname(__DIR__, 2) . '/controllers/uploads/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
 
-    $originalName = basename($_FILES['avatar']['name']);
-    $projectPath = '/Task-management-system';
-    $sanitized = preg_replace('/[^a-zA-Z0-9_\.-]/', '_', $originalName); 
-    $filename = uniqid() . '_' . $sanitized;
-    $targetFile = $uploadDir . $filename;
-    $relativePath = $projectPath . '/controllers/uploads/' . $filename;
+        $originalName = basename($_FILES['avatar']['name']);
+        $projectPath = '/Task-management-system';
+        $sanitized = preg_replace('/[^a-zA-Z0-9_\.-]/', '_', $originalName);
+        $filename = uniqid() . '_' . $sanitized;
+        $targetFile = $uploadDir . $filename;
+        $relativePath = $projectPath . '/controllers/uploads/' . $filename;
 
-    if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFile)) {
-        $fields[] = 'profile_image = :profile_image';
-        $params[':profile_image'] = $relativePath;
-    } else {
-        echo json_encode(['success' => false, 'message' => 'File upload failed.']);
-        exit;
+        if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFile)) {
+            $fields[] = 'profile_image = ?';
+            $params[] = $relativePath;
+        } else {
+            echo json_encode(['success' => false, 'message' => 'File upload failed.']);
+            exit;
+        }
     }
-}
 
     if (count($fields) > 0) {
-        $sql = "UPDATE users SET " . implode(', ', $fields) . " WHERE id = :id";
-        $params[':id'] = $user_id;
+        $sql = "UPDATE users SET " . implode(', ', $fields) . " WHERE id = ?";
+        $params[] = $user_id;
         $stmt = $conn->prepare($sql);
+        $stmt->bind_param(str_repeat('s', count($fields)) . 'i', ...$params);
 
-        if ($stmt->execute($params)) {
+        if ($stmt->execute()) {
             // Fetch and return updated user data
-            $stmt = $conn->prepare("SELECT * FROM users WHERE id = :id");
-            $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+            $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+            $stmt->bind_param('i', $user_id);
             $stmt->execute();
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = $stmt->get_result();
+            $user = $result->fetch_assoc();
 
             echo json_encode([
                 'success' => true,
                 'user' => $user
             ]);
-
-
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to update user data.']);
         }
@@ -144,14 +138,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     exit;
 }
+
 // GET method: fetch user data
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE id = :id");
-    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+    $stmt->bind_param('i', $user_id);
     $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
 
     if ($user) {
         echo json_encode([

@@ -1,14 +1,15 @@
 const calendarGrid = document.getElementById("calendarGrid");
 const viewMode = document.getElementById("viewMode");
 
+let tasks = [];
 
-const tasks = [
+tasks = [
     {
         id: 1,
         name: "Complete project report",
         description: "Write the final report for the project.",
         priority: "High",
-        dueDate: "2023-10-10",
+        due_date: "2023-10-10",
         subtasks: ["Gather data", "Analyze results", "Write conclusions"],
         assignedBy: "Admin John",
     },
@@ -17,7 +18,7 @@ const tasks = [
         name: "Prepare presentation slides",
         description: "Create slides for the upcoming presentation.",
         priority: "Medium",
-        dueDate: "2023-10-25",
+        due_date: "2023-10-25",
         subtasks: ["Design template", "Add content", "Review slides"],
         assignedBy: "Admin Sarah",
     },
@@ -26,7 +27,7 @@ const tasks = [
         name: "Organize team meeting",
         description: "Schedule and prepare for the team meeting.",
         priority: "Low",
-        dueDate: "2023-10-01",
+        due_date: "2023-10-01",
         subtasks: ["Send invites", "Prepare agenda", "Book meeting room"],
         assignedBy: "Admin Mike",
     },
@@ -35,7 +36,7 @@ const tasks = [
         name: "Update website content",
         description: "Revise and update the content on the company website.",
         priority: "High",
-        dueDate: "2023-10-08",
+        due_date: "2023-10-08",
         subtasks: ["Review current content", "Draft new sections", "Publish updates"],
         assignedBy: "Admin Lisa",
     },
@@ -44,12 +45,39 @@ const tasks = [
         name: "Plan team-building activity",
         description: "Organize a team-building event for the department.",
         priority: "Medium",
-        dueDate: "2023-10-03",
+        due_date: "2023-10-03",
         subtasks: ["Choose activity", "Set date and time", "Send invitations"],
         assignedBy: "Admin David",
     },
 ];
 
+// async function fetchTasks() {
+//     try {
+//         const taskRes = await fetch('../controllers/php/tasks.php', {
+//             method: 'GET',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             }
+//         });
+
+//         const userRes = await fetch('../controllers/php/userData.php', {
+
+//         if (response.ok) {
+//             const result = await response.json();
+
+
+
+//             result.push(...tasks);
+//             renderCalendar(tasks);
+//         } else {
+//             console.error("Failed to fetch tasks");
+//         }
+//     } catch (error) {
+//         console.error("Error fetching tasks:", error);
+//     }
+// }
+
+// fetchTasks();
 
 
 const BASE_DATE = new Date("2023-10-01");
@@ -64,7 +92,6 @@ const priorityColors = {
     Medium: "#ff9800",  // Orange
     Low: "#4CAF50"      // Green
 };
-
 
 function renderCalendar() {
     calendarGrid.innerHTML = "";
@@ -88,7 +115,7 @@ function renderCalendar() {
 
         // Filter and add tasks for this date
         tasks.forEach((task, idx) => {
-            const taskDate = new Date(task.dueDate);
+            const taskDate = new Date(task.due_date);
             const taskOffset = getDateOffset(BASE_DATE, taskDate);
 
             if (taskOffset === i) {
@@ -103,6 +130,8 @@ function renderCalendar() {
                 // Apply priority color
                 taskEl.style.backgroundColor = priorityColors[task.priority] || "#9E9E9E";
 
+                // Add click event to show modal
+                taskEl.addEventListener("click", () => showTaskDetails(task));
 
                 dayDiv.appendChild(taskEl);
             }
@@ -126,9 +155,72 @@ function drop(e) {
     const dayIndex = e.currentTarget.dataset.index;
     const newDate = new Date(BASE_DATE);
     newDate.setDate(BASE_DATE.getDate() + parseInt(dayIndex));
-    tasks[taskId].dueDate = newDate.toISOString().split('T')[0];
+    tasks[taskId].due_date = newDate.toISOString().split('T')[0];
     renderCalendar();
 }
+
+function showTaskDetails(task) {
+    const modal = document.createElement("div");
+    modal.className = "modal";
+
+    const modalContent = document.createElement("div");
+    modalContent.className = "modal-content";
+
+    const closeButton = document.createElement("span");
+    closeButton.className = "close-button";
+    closeButton.textContent = "×";
+    closeButton.addEventListener("click", () => modal.remove());
+
+    const taskDetails = `
+        <h2>${task.name}</h2>
+        <p><strong>Description:</strong> ${task.description}</p>
+        <p><strong>Priority:</strong> ${task.priority}</p>
+        <p><strong>Due Date:</strong> ${task.due_date}</p>
+        <p><strong>Assigned By:</strong> ${task.assignedBy}</p>
+        <p><strong>Subtasks:</strong></p>
+        <ul>${task.subtasks.map(subtask => `<li>${subtask}</li>`).join("")}</ul>
+    `;
+
+    modalContent.innerHTML = taskDetails;
+    modalContent.appendChild(closeButton);
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+}
+
+// Add styles for modal
+const style = document.createElement("style");
+style.textContent = `
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+
+    }
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .close-button {
+        cursor: pointer;
+        font-size: 20px;
+        color: rgba;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+`;
+document.head.appendChild(style);
 
 viewMode.addEventListener("change", renderCalendar);
 

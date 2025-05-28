@@ -42,57 +42,61 @@ const tasks = [
         assignedBy: "Admin David",
     },
 ];
+async function fetchTasks() {
+    try {
 
-const taskTableBody = document.querySelector("#taskTable tbody");
+        const [userRes, taskRes] = await Promise.all([
+            fetch('../controllers/php/userData.php'),
+            fetch('../controllers/php/tasks.php')
+        ]);
 
-// Function to render tasks in the table
-function renderTasks() {
-    tasks.forEach((task) => {
-        const row = document.createElement("tr");
+        const userData = await userRes.json();
+        const taskData = await taskRes.json();
+
+        const loggedInUserId = userData.user.id;
+        const tasks = taskData.tasks || [];
+
+        const userTasks = tasks.filter(task => task.assigned_to === loggedInUserId);
 
 
-        const indexCell = document.createElement("td");
-        indexCell.textContent = tasks.indexOf(task) + 1;
-        row.appendChild(indexCell);
+        const tbody = document.getElementById('taskTableBody');
+        tbody.innerHTML = '';
 
-        const nameCell = document.createElement("td");
-        nameCell.textContent = task.name;
-        row.appendChild(nameCell);
+        if (userTasks.length > 0) {
+            userTasks.forEach(task => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${task.id}</td>
+                    <td>${task.name}</td>
+                    <td>${task.description}</td>
+                    <td>${task.label}</td>
+                    <td>${task.category}</td>
 
-        const descriptionCell = document.createElement("td");
-        descriptionCell.textContent = task.description;
-        row.appendChild(descriptionCell);
+                    <td>${task.due_date}</td>
+                    <td>
+                        <span class="priority-badge${task.priority.toLowerCase() === 'high' ? 'priotiy-high' :
+                        task.priority.toLowerCase() === 'medium' ? 'priotiry-medium' : 'priority-low'
+                    }">
+                            ${task.priority}
+                        </span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
 
-        const priorityCell = document.createElement("td");
-        priorityCell.textContent = task.priority;
-        priorityCell.classList.add(`priority-${task.priority.toLowerCase()}`);
-        row.appendChild(priorityCell);
 
-        const dueDateCell = document.createElement("td");
-        dueDateCell.textContent = task.dueDate;
-        row.appendChild(dueDateCell);
+        } else {
+            tbody.innerHTML = '<tr><td colspan="6">No tasks assigned to you</td></tr>';
+        }
 
-        const subtasksCell = document.createElement("td");
-        const subtaskList = document.createElement("ul");
-        subtaskList.classList.add("subtasks");
-        task.subtasks.forEach((subtask) => {
-            const subtaskItem = document.createElement("li");
-            subtaskItem.textContent = subtask;
-            subtaskList.appendChild(subtaskItem);
-        });
-        subtasksCell.appendChild(subtaskList);
-        row.appendChild(subtasksCell);
-
-        taskTableBody.appendChild(row);
-
-        const assignedByCell = document.createElement("td");
-        assignedByCell.textContent = task.assignedBy;
-        row.appendChild(assignedByCell);
-    });
+    } catch (error) {
+        console.error("Error fetching tasks:", error);
+        alert("Error fetching tasks");
+    }
 }
 
-// Render tasks on page load
-renderTasks();
+fetchTasks();
+
 
 const bellIcon = document.querySelector(".bell-icon");
 const notificationCenter = document.getElementById("notificationCenter");

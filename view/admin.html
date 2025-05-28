@@ -75,8 +75,9 @@
       }
       .status-active { background: #27ae60; }
       .status-inactive { background: #e67e22; }
-      .status-completed { background: #238b54; }
-      .status-pending { background: #e7b93c; }
+      .status-high { background: #8b2323; }
+      .status-medium { background: #e7b93c; }
+      .status-low { background: #27ae60; }
       .action-btn {
         background: #3498db;
         color: #fff;
@@ -122,7 +123,7 @@
 
   <body>
      <nav id="sidebar">
-      <h2>Admin</h2>
+      <h2>TMS</h2>
       <ul id="navList">
         <li>
           <a href="admin.html">
@@ -131,9 +132,15 @@
           </a>
         </li>
         <li>
-          <a href="my-task.html">
-            <i class="fa fa-users" aria-hidden="true" ></i>
-            <span>Employees</span>
+          <a href="register.html">
+            <i class="fa fa-user-plus" aria-hidden="true" ></i>
+            <span>Registration</span>
+          </a>
+        </li>
+         <li>
+          <a href="add-task.html">
+            <i class="fa fa-tasks" aria-hidden="true" ></i>
+            <span>Add Task</span>
           </a>
         </li>
         <li>
@@ -229,9 +236,8 @@
         <tr>
           <th>Employee ID</th>
           <th>Name</th>
-          <th>Assigned Tasks</th>
-          <th>Completed Tasks</th>
-          <th>Status</th>
+          <th>Username</th>
+          <th>Role</th>
           <th>Actions</th>
         </tr>
         </thead>
@@ -240,6 +246,7 @@
         </tbody>
       </table>
     </section>
+ 
     <section id="assigned-tasks">
       <h2>All Tasks</h2>
       <table class="assigned-tasks-table">
@@ -249,16 +256,15 @@
           <th>Task Name</th>
           <th>Assigned To</th>
           <th>Deadline</th>
-          <th>Status</th>
+          <th>Priority</th>
           <th>Actions</th>
         </tr>
         </thead>
         <tbody id="taskTableBody">
-        <!-- Tasks will be dynamically added here -->
         </tbody>
       </table>
     </section>
-    <h2>Quick Actions</h2>
+    <h2>Quick Actions</h2> 
     <section id="quick-actions" class="quick-actions">
       <a href="add-task.html">
         <button>Add Task</button>

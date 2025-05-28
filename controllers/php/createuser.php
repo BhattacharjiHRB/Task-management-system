@@ -2,6 +2,9 @@
 
 require_once '../utils/database.php';
 
+header('Content-Type: application/json');
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $required = ['full_name', 'username', 'password', 'role'];
     foreach ($required as $field) {
@@ -39,10 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Check if username already exists
-    $stmt = $conn->prepare("SELECT id FROM users WHERE username = :username");
-    $stmt->bindParam(':username', $username);
+    $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+    $stmt->bind_param('s', $username);
     $stmt->execute();
-    if ($stmt->fetch()) {
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
         echo json_encode(['success' => false, 'message' => 'Username already taken.']);
         exit;
     }
@@ -50,13 +54,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Insert user with optional profile_image
     $sql = "INSERT INTO users (full_name, username, password, role, profile_image) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->execute([$full_name, $username, $password, $role, $profile_image]);
-    if ($stmt->rowCount() > 0) {
+    $stmt->bind_param('sssss', $full_name, $username, $password, $role, $profile_image);
+    $stmt->execute();
+    if ($stmt->affected_rows > 0) {
         echo json_encode(['success' => true, 'message' => 'User registered successfully.']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Registration failed.']);
     }
     exit;
 }
+
+include '../../models/user.model.php';
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+
+    $users = getEmployees($conn);
+
+    echo json_encode(['success' => true, 'employees' => $users]);
+    exit;
+}
+
+
+if($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    parse_str(file_get_contents("php://input"), $data);
+    if (isset($data['userId'])) {
+        $userId = $data['userId'];
+        if (deleteUser($conn, $userId)) {
+            echo json_encode(['success' => true, 'message' => 'User deleted successfully.']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Failed to delete user.']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'User ID is required.']);
+    }
+    exit;
+}
+
+
+
+?>
+
 
 ?>

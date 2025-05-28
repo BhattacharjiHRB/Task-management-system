@@ -1,26 +1,66 @@
 
+const assignedTasks = document.getElementById('assignedTasks');
+const completedTasks = document.getElementById('completedTasks');
+const overdueTasks = document.getElementById('overdueTasks');
 
-const tasks = [
-    { id: 1, name: "Design Homepage", deadline: "2023-10-15", status: "Completed" },
-    { id: 2, name: "Fix Bugs", deadline: "2023-10-20", status: "In Progress" },
-    { id: 3, name: "Write Documentation", deadline: "2023-10-25", status: "Pending" },
-    { id: 4, name: "Implement Authentication", deadline: "2023-11-01", status: "In Progress" },
-    { id: 5, name: "Optimize Database", deadline: "2023-11-10", status: "Pending" },
-];
 
-function populateTaskTable() {
-    const taskTableBody = document.getElementById("taskTableBody");
-    tasks.forEach(task => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-      <td>${task.id}</td>
-      <td>${task.name}</td>
-      <td>${task.deadline}</td>
-      <td>${task.status}</td>
-    `;
-        taskTableBody.appendChild(row);
-    });
+async function populateTaskTable() {
+
+
+    try {
+
+        const [userRes, taskRes] = await Promise.all([
+            fetch('../controllers/php/userData.php'),
+            fetch('../controllers/php/tasks.php')
+        ]);
+
+        const userData = await userRes.json();
+        const taskData = await taskRes.json();
+
+        const loggedInUserId = userData.user.id;
+        const tasks = taskData.tasks || [];
+
+        const userTasks = tasks.filter(task => task.assigned_to === loggedInUserId);
+
+
+        const tbody = document.getElementById('taskTableBody');
+        tbody.innerHTML = '';
+
+        if (userTasks.length > 0) {
+            userTasks.forEach(task => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${task.id}</td>
+                    <td>${task.name}</td>
+
+                    <td>${task.due_date}</td>
+                    <td>
+                        <span class="priority-badge${task.priority.toLowerCase() === 'high' ? 'priotiy-high' :
+                        task.priority.toLowerCase() === 'medium' ? 'priotiry-medium' : 'priority-low'
+                    }">
+                            ${task.priority}
+                        </span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (userTasks.length > 0) {
+                assignedTasks.textContent = userTasks.length;
+                completedTasks.textContent = userTasks.filter(task => task.is_completed === true).length;
+                overdueTasks.textContent = userTasks.filter(task => new Date(task.due_date) < new Date()).length;
+            }
+
+        } else {
+            tbody.innerHTML = '<tr><td colspan="6">No tasks assigned to you</td></tr>';
+        }
+
+    } catch (error) {
+        console.error("Error fetching tasks:", error);
+        alert("Error fetching tasks");
+    }
 }
+
 
 
 document.addEventListener("DOMContentLoaded", populateTaskTable);

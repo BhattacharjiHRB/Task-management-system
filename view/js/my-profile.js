@@ -76,7 +76,7 @@ async function saveChanges() {
 
             if (result.user && result.user.profile_image) {
                 const avatarPath = result.user.profile_image
-                document.getElementById('profile-picture').src = avatarPath;
+                document.getElementById('profile-image').src = avatarPath;
             }
 
             alert('Profile updated successfully!');

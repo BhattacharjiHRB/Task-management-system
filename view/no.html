@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Notifications</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f4f6f8;
+      }
+      header {
+        background: #131755;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+      }
+      .container {
+        max-width: 800px;
+        margin: 30px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        margin-bottom: 20px;
+      }
+      .notification {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        position: relative;
+      }
+      .notification.unread {
+        background: #e8f0fe;
+      }
+      .notification.read {
+        background: #fff;
+      }
+      .notification:last-child {
+        border-bottom: none;
+      }
+      .timestamp {
+        font-size: 0.9em;
+        color: #888;
+      }
+      .mark-read-btn {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .mark-read-btn:hover {
+        background: #2980b9;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>All Notifications</h1>
+    </header>
+
+    <div class="container" id="notificationContainer">
+      <h2>Notifications</h2>
+      <div id="notificationsList">
+        <!-- Notifications will load here -->
+      </div>
+    </div>
+
+    <script>
+      async function loadNotifications() {
+        const res = await fetch("../controllers/php/notification.php", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: 5 }),
+        });
+
+        const notifications = await res.json();
+        if (!res.ok) {
+          const list = document.getElementById("notificationsList");
+          list.innerHTML = "";
+
+          if (data.length === 0) {
+            list.innerHTML = "<p>No notifications found.</p>";
+            return;
+          }
+
+          data.forEach((notification) => {
+            const div = document.createElement("div");
+            div.className = `notification ${
+              notification.is_read == 0 ? "unread" : "read"
+            }`;
+            div.innerHTML = `
+              <p>${notification.message}</p>
+              <span class="timestamp">${notification.created_at}</span>
+              ${
+                notification.is_read == 0
+                  ? `<button class="mark-read-btn" onclick="markAsRead(${notification.id}, this)">Mark as read</button>`
+                  : ""
+              }
+            `;
+            list.appendChild(div);
+          });
+        }
+      }
+
+      function markAsRead(id, button) {
+        fetch("mark_one_as_read.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: id }),
+        }).then(() => {
+          const parent = button.closest(".notification");
+          parent.classList.remove("unread");
+          parent.classList.add("read");
+          button.remove();
+        });
+      }
+
+      loadNotifications();
+    </script>
+  </body>
+</html>

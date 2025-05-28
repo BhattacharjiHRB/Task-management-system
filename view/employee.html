@@ -15,7 +15,7 @@
     <div id="headeer"></div>
   
      <nav id="sidebar">
-      <h2>Employee</h2>
+      <h2>TMS</h2>
       <ul id="navList">
         <li>
           <a href="">
@@ -98,40 +98,35 @@
         <div class="widgets">
           <div class="widget" onclick="showDetails('Tasks Completed')">
             <h3>Tasks Completed</h3>
-            <p>50</p>
+            <p id="completedTasks"></p>
           </div>
           <div class="widget" onclick="showDetails('Pending Tasks')">
-            <h3>Pending Tasks</h3>
-            <p>10</p>
+            <h3 class="pendingTask">Overdue Task</h3>
+            <p id="overdueTasks"></p>
           </div>
           <div class="widget" onclick="showDetails('Team Performance')">
-            <h3>Team Performance</h3>
-            <p>85%</p>
+            <h3>Assigned Tasks</h3>
+            <p id="assignedTasks"></p>
           </div>
         </div>
       </section>
       <section id="assigned-tasks">
         <h2>Assigned Tasks</h2>
         <table class="assigned-tasks-table">
-          <thead class="assigned-tasks-table-head">
+        <thead class="assigned-tasks-table-head">
         <tr>
           <th>Task ID</th>
           <th>Task Name</th>
           <th>Deadline</th>
-          <th>Status</th>
+          <th>Priority</th>
         </tr>
-          </thead>
-          <tbody id="taskTableBody">
-        <!-- Tasks will be dynamically added here -->
-          </tbody>
-        </table>
-    
+        </thead>
+        <tbody id="taskTableBody">
+        </tbody>
+      </table>
 
       <section id="quick-actions" class="quick-actions">
         <h2>Quick Actions</h2>
-        <!-- <a href="add-task.html">
-            <button onclick="performAction('Add Task')">Add Task</button>
-        </a> -->
         <button onclick="window.location.href = `page-not-found.html`;">View Reports</button>
         <button onclick="window.location.href = `page-not-found.html`;">Manage Team</button>
       </section>

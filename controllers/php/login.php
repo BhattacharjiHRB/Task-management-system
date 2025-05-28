@@ -18,11 +18,12 @@ if (empty($username) || empty($password)) {
     exit;
 }
 
-$query = "SELECT id, username,full_name, password, role FROM users WHERE username = :username";
+$query = "SELECT id, username, full_name, password, role FROM users WHERE username = ?";
 $stmt = $conn->prepare($query);
-$stmt->bindParam(':username', $username, PDO::PARAM_STR);
+$stmt->bind_param('s', $username);
 $stmt->execute();
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
 
 if ($user) {
     

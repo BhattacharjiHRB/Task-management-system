@@ -1,77 +1,159 @@
-// Dummy data for demonstration
-const employees = [
-    { id: 'EMP001', name: 'Alice Johnson', assigned: 10, completed: 8, status: 'Active' },
-    { id: 'EMP002', name: 'Bob Smith', assigned: 12, completed: 12, status: 'Active' },
-    { id: 'EMP003', name: 'Charlie Lee', assigned: 8, completed: 5, status: 'Inactive' },
-    { id: 'EMP004', name: 'Diana Prince', assigned: 7, completed: 7, status: 'Active' },
-    { id: 'EMP005', name: 'Evan Wright', assigned: 6, completed: 3, status: 'Active' }
-];
+totalEmp
+assignedTask
+completeTask
+pendingTask = documenttotalEmp
+assignedTask
+completeTask
+pendingTask = documentotalEmp
+assignedTask
+completeTask
+pendingTask = document.totalEmp
+assignedTask
+completeTask
+pendingTask = document.getElementById('pendingTasks')
 
-const tasks = [
-    { id: 'T001', name: 'Design UI', assignedTo: 'Alice Johnson', deadline: '2024-06-10', status: 'Completed' },
-    { id: 'T002', name: 'Backend API', assignedTo: 'Bob Smith', deadline: '2024-06-12', status: 'Pending' },
-    { id: 'T003', name: 'Testing', assignedTo: 'Charlie Lee', deadline: '2024-06-15', status: 'Completed' },
-    { id: 'T004', name: 'Documentation', assignedTo: 'Diana Prince', deadline: '2024-06-18', status: 'Pending' },
-    { id: 'T005', name: 'Client Meeting', assignedTo: 'Evan Wright', deadline: '2024-06-20', status: 'Pending' }
-];
 
-// Populate widgets
-function updateWidgets() {
-    document.getElementById('totalEmployees').textContent = employees.length;
-    document.getElementById('tasksAssigned').textContent = tasks.length;
-    document.getElementById('tasksCompleted').textContent = tasks.filter(t => t.status === 'Completed').length;
-    document.getElementById('pendingTasks').textContent = tasks.filter(t => t.status === 'Pending').length;
-}
+async function showUserData() {
 
-// Populate employee table
-function populateEmployeeTable() {
-    const tbody = document.getElementById('employeeTableBody');
-    tbody.innerHTML = '';
-    employees.forEach(emp => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${emp.id}</td>
-          <td>${emp.name}</td>
-          <td>${emp.assigned}</td>
-          <td>${emp.completed}</td>
-          <td>
-            <span class="status-badge ${emp.status === 'Active' ? 'status-active' : 'status-inactive'}">
-            ${emp.status}
-            </span>
-          </td>
-          <td>
-            <button class="action-btn" onclick="editEmployee('${emp.id}')">Edit</button>
-            <button class="action-btn" onclick="removeEmployee('${emp.id}')">Remove</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
+    const welcomeMessage = document.getElementById("welcomeMsg");
+
+    const response = await fetch('../controllers/php/userData.php', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
     });
+
+    if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+            welcomeMessage.innerHTML = `<a href="my-profile.html" style="color: inherit; text-decoration: none;">Welcome, @${data.user.username}!</a>`;
+
+        } else {
+            location.href = "login.html";
+        }
+    } else {
+        console.error("Failed to fetch user data");
+    }
+
 }
 
-// Populate task table
-function populateTaskTable() {
-    const tbody = document.getElementById('taskTableBody');
-    tbody.innerHTML = '';
-    tasks.forEach(task => {
-        tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${task.id}</td>
-          <td>${task.name}</td>
-          <td>${task.assignedTo}</td>
-          <td>${task.deadline}</td>
-          <td>
-            <span class="status-badge ${task.status === 'Completed' ? 'status-completed' : 'status-pending'}">
-            ${task.status}
-            </span>
-          </td>
-          <td>
-            <button class="action-btn" onclick="editTask('${task.id}')">Edit</button>
-            <button class="action-btn" onclick="removeTask('${task.id}')">Remove</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-    });
+document.addEventListener("DOMContentLoaded", showUserData);
+
+
+
+async function fetchTasks() {
+
+
+    try {
+
+        const taskRes = await fetch('../controllers/php/tasks.php', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const userRes = await fetch('../controllers/php/createuser.php', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+
+
+        const result = await taskRes.json();
+        const emp = await userRes.json();
+
+        console.log('Tasks:', result.tasks);
+        console.log('Employees:', emp.employees);
+
+        const tasks = result.tasks || [];
+        const employees = emp.employees || [];
+
+        // populateEmployeeTable(employees);
+
+        document.getElementById('tasksCompleted').textContent = tasks.filter(t => t.status === 'Completed').length;
+        document.getElementById('pendingTasks').textContent = tasks.filter(t => t.status === 'Pending').length;
+
+        const tbody = document.getElementById('taskTableBody');
+        tbody.innerHTML = '';
+
+        if (tasks.length > 0 && employees.length > 0) {
+
+            tasks.forEach(task => {
+                const assignedEmployee = employees.find(emp => emp.id === task.assigned_to);
+
+                const username = assignedEmployee ? assignedEmployee.username : 'User Resigned';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${task.id}</td>
+                    <td>${task.name}</td>
+                    <td>${username}</td>
+                    <td>${task.due_date}</td>
+
+                    <td>
+                        <span class="status-badge ${task.priority.toLowerCase() === 'high' ? 'status-high' :
+                        task.priority.toLowerCase() === 'medium' ? 'status-medium' :
+                            'status-low'
+                    }">
+                        ${task.priority}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="action-btn" onclick="editTask('${task.id}')">Edit</button>
+                        <button class="action-btn" onclick="removeTask('${task.id}')">Remove</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            const empTbody = document.getElementById('employeeTableBody');
+            empTbody.innerHTML = '';
+
+            employees.forEach(emp => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                        <td>${emp.id}</td>
+                        <td>${emp.full_name}</td>
+                        <td>${emp.username}</td>
+                        <td>${emp.role}</td>
+                        <td>
+                            <button class="action-btn" onclick="editEmployee('${emp.id}')">Edit</button>
+                            <button class="action-btn" onclick="removeEmployee('${emp.id}')">Remove</button>
+                        </td>
+                        `;
+                empTbody.appendChild(tr);
+            });
+
+            if (employees.length > 0) {
+                const totalTasks = tasks.length;
+                const totalEmployees = employees.length;
+
+
+                pendingTask.textContent = totalEmployees;
+                pendingTask.textContent = totalTasks;
+                pendingTask.textContent = tasks.filter(t => t.is_completed === true).length;
+                pendingTask.textContent = tasks.filter(t => new Date(t.due_date) < new Date()).length;
+
+            }
+
+
+        } else {
+            tbody.innerHTML = '<tr><td colspan="6">No tasks or users found</td></tr>';
+        }
+    } catch (error) {
+        console.log("Error fetching tasks:", error.message);
+        alert("Error fetching tasks");
+    }
 }
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", fetchTasks);
 
 // Widget click handler
 function showDetails(type) {
@@ -113,40 +195,6 @@ document.addEventListener('click', function (e) {
         notif.classList.remove('active');
     }
 });
-
-// On page load
-document.addEventListener("DOMContentLoaded", updateWidgets)
-document.addEventListener("DOMContentLoaded", populateEmployeeTable);
-populateTaskTable();
-
-
-async function showUserData() {
-
-    const welcomeMessage = document.getElementById("welcomeMsg");
-
-    const response = await fetch('../controllers/php/userData.php', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-    });
-
-    if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
-            welcomeMessage.innerHTML = `<a href="my-profile.html" style="color: inherit; text-decoration: none;">Welcome, @${data.user.username}!</a>`;
-
-        } else {
-            location.href = "login.html";
-        }
-    } else {
-        console.error("Failed to fetch user data");
-    }
-
-}
-
-document.addEventListener("DOMContentLoaded", showUserData);
 
 
 
@@ -196,7 +244,7 @@ async function logoutUser() {
         if (res.ok) {
             alert("Are you sure you want to logout?");
             cookieStore.delete("PHPSESSID");
-            window.location.reload();
+
             window.location.href = "login.html";
 
         }

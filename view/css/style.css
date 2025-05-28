@@ -325,8 +325,44 @@ input:checked + .slider:before {
 .detailed-task-form button:hover {
   background: #007bff;
 }
+.assigned-to-selector {
+  margin-bottom: 10px;
+}
 
-/* Beautified Priority Selector */
+.assigned-label {
+  margin-bottom: 5px;
+  display: block;
+}
+
+.custom-select {
+  position: relative;
+  width: 100%;
+}
+
+.assigned-dropdown {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #bcd0ee;
+  background: #f6faff;
+  border-radius: 6px;
+  font-size: 1em;
+  color: #333;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  z-index: 1; /* Ensure dropdown options are visible */
+}
+
+.assigned-dropdown:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.assigned-dropdown option {
+  color: #333; /* Ensure option text is visible */
+  background: #fff; /* Set background for options */
+}
 .priority-selector {
   display: flex;
   flex-direction: column;
@@ -591,15 +627,21 @@ nav a:hover {
 .my-task-table tr:hover {
   background-color: #f1f1f1;
 }
+.priority-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.9em;
+  color: #fff;
+}
 .priority-high {
-  color: rgb(233, 169, 169);
+  background: rgb(221, 40, 40);
   font-weight: bold;
 }
 .priority-medium {
-  color: rgb(231, 209, 167);
+  background: rgb(187, 138, 47);
 }
 .priority-low {
-  color: rgb(174, 245, 174);
+  background: rgb(26, 165, 26);
 }
 .subtasks {
   margin: 0;

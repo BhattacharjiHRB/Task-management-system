@@ -13,7 +13,7 @@
   </head>
   <body>
     <nav id="sidebar">
-    <h2>Admin</h2>
+    <h2>TMS</h2>
     <ul id="navList">
       <li>
         <a href="admin.html">
@@ -97,7 +97,7 @@
       <div class="quick-add-bar">
         <input
           type="text"
-          id="taskInput"
+          id="name"
           placeholder="Type task name and press Enter"
         />
         <button id="advancedOptions">+</button>
@@ -133,12 +133,20 @@
       <label>Category:</label>
       <input type="text" id="taskCategory" placeholder="e.g. Work, Personal" />
     </div>
-
+    <div class="assigned-to-selector">
+      <label for="assignedTo" class="assigned-label">Assigned To:</label>
+      <div class="custom-select">
+      <select id="assignedTo" class="assigned-dropdown" default="Select User" > 
+        <!-- Options will be dynamically populated from the backend -->
+      </select>
+      </div>
+    </div>
     <div class="subtasks-container">
       <label>Subtasks:</label>
       <input type="text" id="subtaskInput" placeholder="Add subtask and press Enter" />
       <ul id="subtaskList"></ul>
     </div>
+
         <button id="addTaskButton">Add Task</button>
       </div>
     </div>

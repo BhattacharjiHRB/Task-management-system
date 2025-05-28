@@ -11,7 +11,7 @@
   </head>
   <body>
     <nav id="sidebar">
-      <h2>Employee</h2>
+      <h2>TMS</h2>
       <ul id="navList">
         <li>
           <a href="employee.html">
@@ -90,22 +90,23 @@
         
       </header> 
     <div class="all-task-container">
-      <table id="taskTable" class="my-task-table">
-        <thead>
-          <tr>
-            <th>Task ID</th>
-            <th>Task Name</th>
-            <th>Description</th>
-            <th>Priority</th>
-            <th>Due Date</th>
-            <th>Subtasks</th>
-            <th>Assigned By</th>
-          </tr>
+      <h2>Assigned Tasks</h2>
+       <table class="assigned-tasks-table">
+        <thead class="assigned-tasks-table-head">
+        <tr>
+          <th>Task ID</th>
+          <th>Task Name</th>
+          <th>Task Description</th>
+          <th>Task Label</th>
+          <th>Category</th>
+          <th>Deadline</th>
+          <th>Priority</th>
+        </tr>
         </thead>
-        <tbody>
-          <!-- Tasks will be dynamically added here -->
+        <tbody id="taskTableBody">
         </tbody>
       </table>
+      
     </div>
 
     <script src="js/my-task.js"></script>

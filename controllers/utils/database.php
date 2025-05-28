@@ -6,8 +6,10 @@ $pass  = "";
 $db_name = "task_management_db";
 
 try {
-	$conn = new PDO("mysql:host=$sName;dbname=$db_name", $uName, $pass);
-	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$conn = mySqli_connect($sName, $uName, $pass, $db_name);
+	if (!$conn) {
+		throw new Exception("Connection failed: " . mySqli_connect_error());
+	}
 }catch(PDOException $e){
 	echo "Connection failed: ". $e->getMessage();
 	exit;
